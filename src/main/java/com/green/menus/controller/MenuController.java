@@ -29,18 +29,34 @@ public class MenuController {
 		return "menus/list";   // /WEB-INF/views/menus/list.jsp
 	}
 	
+	// /Menus/WriteForm
+	@RequestMapping("/Menus/WriteForm")
+	public String writeForm() {
+		return "menus/write"; // write.jsp 로 이동
+	}
+	
+	@RequestMapping("/Menus/Write")
+	public String write(MenuDTO menuDTO, Model model) {
+		
+		// 넘어온 값
+		System.out.println("menu_id = " + menuDTO.getMenu_id());
+		System.out.println("menu_name = " + menuDTO.getMenu_name());
+		System.out.println("menu_seq = " + menuDTO.getMenu_seq());
+		
+		// db에 저장
+		menuMapper.insertMenu(menuDTO);
+		
+		//다시 조회 -> 결과를 menuList 에 넣음
+		List<MenuDTO> menuList = menuMapper.getMenuList();
+		model.addAttribute("menuList", menuList);
+		
+		return "menus/list";
+	}
+	
+	
+	
+	
+	
+	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
