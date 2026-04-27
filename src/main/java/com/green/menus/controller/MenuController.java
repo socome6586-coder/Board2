@@ -13,6 +13,11 @@ import com.green.menus.mapper.MenuMapper;
 @Controller
 public class MenuController {
 	
+	// @Autowired : Spring Container 에 미리 new 된 Component 를
+	// 찾아서 menuMapper 변수에 넣는다
+	// @Autowired() : 객체 타입으로 찾아서 연결
+	// @Qulified()  : 객체 이름으로 찾아서 연결
+	// 최근 기법은 생성자를 이용한 방식으로 변화
 	@Autowired
 	private  MenuMapper  menuMapper;
 	
@@ -39,6 +44,7 @@ public class MenuController {
 	public String write(MenuDTO menuDTO, Model model) {
 		
 		// 넘어온 값
+		System.out.println("넘어온 값(menuDTO) : " + menuDTO);
 		System.out.println("menu_id = " + menuDTO.getMenu_id());
 		System.out.println("menu_name = " + menuDTO.getMenu_name());
 		System.out.println("menu_seq = " + menuDTO.getMenu_seq());
@@ -46,15 +52,48 @@ public class MenuController {
 		// db에 저장
 		menuMapper.insertMenu(menuDTO);
 		
+		return "redirect:/Menus/List";
+		/*
 		//다시 조회 -> 결과를 menuList 에 넣음
 		List<MenuDTO> menuList = menuMapper.getMenuList();
 		model.addAttribute("menuList", menuList);
 		
 		return "menus/list";
+		*/
+	} // 메뉴 추가
+	
+	@RequestMapping("/Menus/Delete")
+	public String delete( MenuDTO menuDTO ) {
+		
+		// db에서 삭제
+		menuMapper.deleteMenu(menuDTO); 
+		
+		return "redirect:/Menus/List";
+	} // 메뉴 삭제
+	
+	/*
+	// /Menus/Delete
+	 * @RequestMapping("/Menus/Delete") public String delete( String menu_id ) {
+	 * 
+	 * System.out.println("삭제할 메뉴 ID : " + menu_id);
+	 * 
+	 * MenuDTO menuDTO = new MenuDTO(menu_id, null, 0); // db에서 삭제
+	 * menuMapper.deleteMenu(menuDTO); // mybatis mapper 에는 DTO전달
+	 * 
+	 * return "redirect:/Menus/List"; }
+	 */
+	
+	// http://localhost:8080/Menus/UpdateForm?menu_id=MENU07
+	@RequestMapping("/Menus/UpdateForm")
+	public String update(MenuDTO menuDTO Model model) {
+		System.out.println("넘어온 정보 menuDTO : " + menuDTO);
+		
+		// 수정할 자료를 db 에서 검색 : 수정할 정보가 담긴 조회된 menu
+		MenuDTO  menu = menuMapper.getMenu(menuDTO);
+		model.addAttribute("menu", menu);
+		
+		return "menus/update";
 	}
-	
-	
-	
 	
 	
 	

@@ -13,11 +13,27 @@ Windows -> Preferences -> XML(Wild Web Developer) -> Download external... 체크
 	SELECT     MENU_ID, MENU_NAME, MENU_SEQ
 	 FROM      MENUS
 	 ORDER BY  MENU_SEQ ASC
-	 	
+	
 	</select>
   
   	<insert id="insertMenu">
   	INSERT INTO MENUS (MENU_ID, MENU_NAME, MENU_SEQ)
   	VALUES (#{menu_id}, #{menu_name}, #{menu_seq})
   	</insert>
+  	
+  	<delete id="deleteMenu">
+  	
+  	DELETE FROM MENUS
+    WHERE  MENU_ID = #{menu_id}
+  	
+  	</delete>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
 </mapper>
