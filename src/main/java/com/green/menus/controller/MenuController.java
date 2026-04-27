@@ -62,6 +62,8 @@ public class MenuController {
 		*/
 	} // 메뉴 추가
 	
+	/*--------------------------------------------------------------------*/
+	
 	@RequestMapping("/Menus/Delete")
 	public String delete( MenuDTO menuDTO ) {
 		
@@ -83,19 +85,31 @@ public class MenuController {
 	 * return "redirect:/Menus/List"; }
 	 */
 	
+	/*--------------------------------------------------------------------*/
+	
 	// http://localhost:8080/Menus/UpdateForm?menu_id=MENU07
 	@RequestMapping("/Menus/UpdateForm")
-	public String update(MenuDTO menuDTO Model model) {
-		System.out.println("넘어온 정보 menuDTO : " + menuDTO);
+	public String update(MenuDTO menuDTO, Model model) {
+		System.out.println("넘어온 menuDTO : " + menuDTO);
 		
 		// 수정할 자료를 db 에서 검색 : 수정할 정보가 담긴 조회된 menu
 		MenuDTO  menu = menuMapper.getMenu(menuDTO);
 		model.addAttribute("menu", menu);
+		System.out.println("조회한 menuDTO : " + menu);
 		
 		return "menus/update";
 	}
 	
+	/*--------------------------------------------------------------------*/
 	
+	@RequestMapping("/Menus/Update")
+	public String update(MenuDTO menuDTO) {
+		
+		// 넘어온 정보로 db 를 수정한다
+		menuMapper.updateMenu(menuDTO);
+		
+		return "redirect:/Menus/List";
+	}
 	
 	
 }
